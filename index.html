@@ -1,77 +1,193 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Зайка и сердечки</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Небольшой опрос</title>
+
 <style>
-  body {
+body {
     margin: 0;
-    padding: 50px;
-    font-family: 'Arial', sans-serif;
-    background: linear-gradient(135deg, #ffe6f0, #fff0f5);
+    min-height: 100vh;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: radial-gradient(circle at top, #1a1a1a, #0b0b0b);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+}
+
+.quiz {
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(14px);
+    border-radius: 22px;
+    padding: 28px 22px 32px;
+    width: 92%;
+    max-width: 380px;
     text-align: center;
-    overflow: hidden;
-    height: 100vh;
-  }
+    box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+}
 
-  h1 {
-    font-size: 28px;
-    color: #d6336c;
-    margin-bottom: 30px;
-    text-shadow: 1px 1px 2px #fff;
-  }
+.question {
+    font-size: 18px;
+    line-height: 1.45;
+    margin-bottom: 26px;
+}
 
-  /* Стиль для сердечек */
-  .heart {
-    position: absolute;
-    font-size: 24px;
-    color: red;
-    opacity: 0.8;
-    animation: floatUp 4s linear forwards;
-  }
+.buttons {
+    display: flex;
+    gap: 14px;
+}
 
-  @keyframes floatUp {
-    0% {
-      transform: translateY(0) scale(1);
-      opacity: 0.8;
-    }
-    100% {
-      transform: translateY(-600px) scale(0.5);
-      opacity: 0;
-    }
-  }
+button {
+    flex: 1;
+    padding: 16px;
+    font-size: 17px;
+    border-radius: 14px;
+    border: none;
+    cursor: pointer;
+    background: rgba(255,255,255,0.12);
+    color: white;
+    transition: 0.25s;
+}
+
+button:active {
+    transform: scale(0.97);
+}
+
+.correct {
+    animation: blinkGreen 0.6s ease-in-out 2;
+    background: #1f7a4f !important;
+}
+
+.wrong {
+    background: #7a1f1f !important;
+}
+
+@keyframes blinkGreen {
+    0% { background: #1f7a4f; }
+    50% { background: #2ecc71; }
+    100% { background: #1f7a4f; }
+}
+
+.footer {
+    margin-top: 22px;
+    font-size: 13px;
+    opacity: 0.7;
+}
+
+.call-btn {
+    margin-top: 26px;
+    display: inline-block;
+    width: 100%;
+    padding: 16px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #2ecc71, #1abc9c);
+    color: #0b0b0b;
+    font-size: 17px;
+    font-weight: 600;
+    text-decoration: none;
+    box-shadow: 0 10px 25px rgba(46, 204, 113, 0.35);
+}
+
+.call-btn:active {
+    transform: scale(0.97);
+}
+
+.fade {
+    animation: fade 0.35s ease;
+}
+
+@keyframes fade {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+}
 </style>
 </head>
+
 <body>
 
-<h1>Всё, поехали!</h1>
+<div class="quiz fade">
+    <div class="question" id="question"></div>
 
-<!-- Картинка сердечек (можно заменить или убрать) -->
-<!-- <img src="https://i.imgur.com/3X7fY0T.png" alt="Сердечки" width="250" /> -->
+    <div class="buttons" id="buttons">
+        <button onclick="answer(true)">Да</button>
+        <button onclick="answer(false)">Нет</button>
+    </div>
+
+    <div class="footer" id="footer"></div>
+</div>
 
 <script>
-  function createHeart() {
-    const heart = document.createElement('div');
-    heart.className = 'heart';
-    heart.innerHTML = '❤️';
+const questions = [
+    "Ты улыбаешься, когда читаешь это?",
+    "Веришь, что случайные вещи не случайны?",
+    "Кофе вдвоём — это уже маленькое свидание?",
+    "Ты бы нажала «Да», не раздумывая слишком долго?",
+    "Иногда интуиция говорит громче логики?",
+    "Тебе нравится, когда всё начинается легко?",
+    "Ты сейчас думаешь: «Интересно, что будет дальше?»",
+    "Музыка делает моменты чуть ближе?",
+    "Ты любишь, когда разговор затягивается?",
+    "Иногда «Да» звучит приятнее, чем «Нет»?",
+    "Тебе важно чувствовать общий вайб?",
+    "Ты любишь небольшую интригу?",
+    "Кажется, этот опрос уже цепляет?",
+    "Ты улыбаешься чуть чаще, чем в начале?",
+    "Хочется узнать продолжение?",
+    "Ну что… да?"
+];
 
-    // Случайное положение по горизонтали
-    heart.style.left = Math.random() * 90 + 'vw';
+let current = 0;
+const questionEl = document.getElementById("question");
+const footerEl = document.getElementById("footer");
+const buttons = document.querySelectorAll("button");
+const buttonsWrap = document.getElementById("buttons");
 
-    // Случайное время анимации
-    heart.style.animationDuration = (2 + Math.random() * 2) + 's';
+function loadQuestion() {
+    questionEl.textContent = questions[current];
+    footerEl.textContent = `Вопрос ${current + 1} из ${questions.length}`;
+}
 
-    document.body.appendChild(heart);
+function answer(isYes) {
+    buttons.forEach(b => b.disabled = true);
 
-    // Удаляем сердце после окончания анимации
+    if (isYes) {
+        buttons[0].classList.add("correct");
+    } else {
+        buttons[1].classList.add("wrong");
+    }
+
     setTimeout(() => {
-      heart.remove();
-    }, 4000);
-  }
+        buttons.forEach(b => {
+            b.classList.remove("correct", "wrong");
+            b.disabled = false;
+        });
 
-  // Создавать сердечки каждые 300 миллисекунд
-  setInterval(createHeart, 300);
+        current++;
+
+        if (current < questions.length) {
+            loadQuestion();
+        } else {
+            showFinal();
+        }
+    }, 900);
+}
+
+function showFinal() {
+    questionEl.innerHTML = 
+        "Похоже, ты часто выбирала «Да» 😉<br><br>" +
+        "Если захочешь продолжить — я на связи.";
+
+    buttonsWrap.style.display = "none";
+    footerEl.innerHTML = `
+        <a class="call-btn" href="tel:+79990000000">
+            📞 Позвонить мне
+        </a>
+    `;
+}
+
+loadQuestion();
 </script>
 
 </body>
