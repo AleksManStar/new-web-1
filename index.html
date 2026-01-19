@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Небольшой опрос</title>
+<title>Небольшая игра</title>
 
 <style>
 body {
@@ -17,81 +17,50 @@ body {
     color: #fff;
 }
 
-.quiz {
-    background: rgba(255, 255, 255, 0.06);
+.card {
+    width: 92%;
+    max-width: 400px;
+    background: rgba(255,255,255,0.06);
     backdrop-filter: blur(14px);
     border-radius: 22px;
-    padding: 28px 22px 32px;
-    width: 92%;
-    max-width: 380px;
-    text-align: center;
+    padding: 26px 22px 30px;
     box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+    text-align: center;
 }
 
-.question {
+.title {
     font-size: 18px;
     line-height: 1.45;
-    margin-bottom: 26px;
+    margin-bottom: 24px;
 }
 
-.buttons {
+.options {
     display: flex;
+    flex-direction: column;
     gap: 14px;
 }
 
-button {
-    flex: 1;
+.option {
     padding: 16px;
-    font-size: 17px;
-    border-radius: 14px;
-    border: none;
-    cursor: pointer;
+    border-radius: 16px;
     background: rgba(255,255,255,0.12);
-    color: white;
+    cursor: pointer;
     transition: 0.25s;
+    font-size: 16px;
 }
 
-button:active {
+.option:active {
     transform: scale(0.97);
 }
 
-.correct {
-    animation: blinkGreen 0.6s ease-in-out 2;
-    background: #1f7a4f !important;
-}
-
-.wrong {
-    background: #7a1f1f !important;
-}
-
-@keyframes blinkGreen {
-    0% { background: #1f7a4f; }
-    50% { background: #2ecc71; }
-    100% { background: #1f7a4f; }
+.option:hover {
+    background: rgba(255,255,255,0.18);
 }
 
 .footer {
     margin-top: 22px;
     font-size: 13px;
-    opacity: 0.7;
-}
-
-.call-btn {
-    margin-top: 26px;
-    display: inline-block;
-    width: 100%;
-    padding: 16px;
-    border-radius: 16px;
-    background: linear-gradient(135deg, #2ecc71, #1abc9c);
-    color: #0b0b0b;
-    font-size: 17px;
-    font-weight: 600;
-    text-decoration: none;
-    box-shadow: 0 10px 25px rgba(46, 204, 113, 0.35);
-}
-
-.call-btn:active {
-    transform: scale(0.97);
+    opacity: 0.65;
 }
 
 .fade {
@@ -107,84 +76,123 @@ button:active {
 
 <body>
 
-<div class="quiz fade">
-    <div class="question" id="question"></div>
+<div class="card fade">
+    <div class="title" id="question"></div>
 
-    <div class="buttons" id="buttons">
-        <button onclick="answer(true)">Да</button>
-        <button onclick="answer(false)">Нет</button>
-    </div>
+    <div class="options" id="options"></div>
 
     <div class="footer" id="footer"></div>
 </div>
 
 <script>
 const questions = [
-    "Ты улыбаешься, когда читаешь это?",
-    "Веришь, что случайные вещи не случайны?",
-    "Кофе вдвоём — это уже маленькое свидание?",
-    "Ты бы нажала «Да», не раздумывая слишком долго?",
-    "Иногда интуиция говорит громче логики?",
-    "Тебе нравится, когда всё начинается легко?",
-    "Ты сейчас думаешь: «Интересно, что будет дальше?»",
-    "Музыка делает моменты чуть ближе?",
-    "Ты любишь, когда разговор затягивается?",
-    "Иногда «Да» звучит приятнее, чем «Нет»?",
-    "Тебе важно чувствовать общий вайб?",
-    "Ты любишь небольшую интригу?",
-    "Кажется, этот опрос уже цепляет?",
-    "Ты улыбаешься чуть чаще, чем в начале?",
-    "Хочется узнать продолжение?",
-    "Ну что… да?"
+    {
+        q: "Моя вторая половина должна быть человеком, который…",
+        a: ["чувствует без лишних слов", "умеет говорить прямо"]
+    },
+    {
+        q: "Лучший отдых — это…",
+        a: ["спонтанная поездка", "уютный вечер без спешки"]
+    },
+    {
+        q: "В отношениях для меня важнее…",
+        a: ["спокойствие", "яркие эмоции"]
+    },
+    {
+        q: "В людях я больше всего ценю…",
+        a: ["искренность", "чувство юмора"]
+    },
+    {
+        q: "Идеальный разговор — это когда…",
+        a: ["можно говорить о глубоком", "всё легко и просто"]
+    },
+    {
+        q: "Мне ближе люди, которые…",
+        a: ["живут сердцем", "думают головой"]
+    },
+    {
+        q: "В жизни я выбираю…",
+        a: ["стабильность", "развитие"]
+    },
+    {
+        q: "Счастье для меня — это когда…",
+        a: ["спокойно внутри", "интересно вокруг"]
+    },
+    {
+        q: "Вторая половина — это тот, кто…",
+        a: ["поддерживает", "вдохновляет"]
+    },
+    {
+        q: "Лучшие моменты — это…",
+        a: ["когда смеёмся", "когда молчим вместе"]
+    },
+    {
+        q: "Мне нравится, когда человек…",
+        a: ["немного загадочный", "понятный и открытый"]
+    },
+    {
+        q: "В отношениях я больше за…",
+        a: ["доверие", "страсть"]
+    },
+    {
+        q: "Для меня важно, чтобы рядом был человек, который…",
+        a: ["принимает", "разделяет цели"]
+    },
+    {
+        q: "Лучшие решения обычно принимаются…",
+        a: ["интуитивно", "осознанно"]
+    },
+    {
+        q: "Мне ближе формат отношений, где…",
+        a: ["мы — команда", "мы — партнёры с характером"]
+    },
+    {
+        q: "Если честно, я верю, что…",
+        a: ["совпадения не случайны", "люди находят друг друга вовремя"]
+    }
 ];
 
 let current = 0;
+
 const questionEl = document.getElementById("question");
+const optionsEl = document.getElementById("options");
 const footerEl = document.getElementById("footer");
-const buttons = document.querySelectorAll("button");
-const buttonsWrap = document.getElementById("buttons");
 
 function loadQuestion() {
-    questionEl.textContent = questions[current];
+    const item = questions[current];
+    questionEl.textContent = item.q;
+    optionsEl.innerHTML = "";
+
+    item.a.forEach(text => {
+        const div = document.createElement("div");
+        div.className = "option";
+        div.textContent = text;
+        div.onclick = next;
+        optionsEl.appendChild(div);
+    });
+
     footerEl.textContent = `Вопрос ${current + 1} из ${questions.length}`;
 }
 
-function answer(isYes) {
-    buttons.forEach(b => b.disabled = true);
-
-    if (isYes) {
-        buttons[0].classList.add("correct");
+function next() {
+    current++;
+    if (current < questions.length) {
+        loadQuestion();
     } else {
-        buttons[1].classList.add("wrong");
+        showFinal();
     }
-
-    setTimeout(() => {
-        buttons.forEach(b => {
-            b.classList.remove("correct", "wrong");
-            b.disabled = false;
-        });
-
-        current++;
-
-        if (current < questions.length) {
-            loadQuestion();
-        } else {
-            showFinal();
-        }
-    }, 900);
 }
 
 function showFinal() {
-    questionEl.innerHTML = 
-        "Похоже, ты часто выбирала «Да» 😉<br><br>" +
-        "Если захочешь продолжить — я на связи.";
-
-    buttonsWrap.style.display = "none";
-    footerEl.innerHTML = `
-        <a class="call-btn" href="tel:+37120099772">
-            📞 Позвонить мне
-        </a>
+    questionEl.innerHTML = `
+        Кажется, мы смотрим на многие вещи очень похоже 💫<br><br>
+        Если собрать всё вместе…<br>
+        ты — <b>моя вторая половина на 100%</b> ❤️<br><br>
+        💖💖💖💖💖<br>
+        😘😘😘
     `;
+    optionsEl.style.display = "none";
+    footerEl.textContent = "";
 }
 
 loadQuestion();
