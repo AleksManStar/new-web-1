@@ -1,185 +1,187 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Небольшая игра</title>
+<title>Original Auto Parts Assistance</title>
 
 <style>
 body {
     margin: 0;
-    min-height: 100vh;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    background: radial-gradient(circle at top, #1a1a1a, #0b0b0b);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: #fff;
+    background: radial-gradient(circle at top, #1b1b1b, #0b0b0b);
+    color: #ffffff;
 }
 
-.card {
-    width: 92%;
-    max-width: 420px;
-    background: rgba(255,255,255,0.06);
-    backdrop-filter: blur(14px);
-    border-radius: 22px;
-    padding: 26px 22px 30px;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+.container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 24px;
+}
+
+.hero {
     text-align: center;
+    padding: 60px 20px 40px;
 }
 
-.title {
+.hero h1 {
+    font-size: 34px;
+    margin-bottom: 14px;
+}
+
+.hero p {
     font-size: 18px;
-    line-height: 1.45;
-    margin-bottom: 22px;
+    opacity: 0.85;
 }
 
-.options {
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-}
-
-.option {
-    padding: 16px;
-    border-radius: 16px;
-    background: rgba(255,255,255,0.12);
-    cursor: pointer;
-    transition: 0.25s;
-    font-size: 16px;
-}
-
-.option:hover {
-    background: rgba(255,255,255,0.18);
-}
-
-.footer {
-    margin-top: 20px;
-    font-size: 13px;
-    opacity: 0.65;
-}
-
-.answers {
-    text-align: left;
-    margin-top: 20px;
-    font-size: 15px;
-}
-
-.match {
-    color: #7CFF9E;
+.button {
+    margin-top: 26px;
+    display: inline-block;
+    padding: 16px 26px;
+    background: #2ecc71;
+    color: #000;
+    border-radius: 14px;
+    text-decoration: none;
     font-weight: 600;
 }
 
-.fade {
-    animation: fade 0.35s ease;
+.section {
+    margin-top: 60px;
 }
 
-@keyframes fade {
-    from { opacity: 0; transform: translateY(6px); }
-    to { opacity: 1; transform: translateY(0); }
+.section h2 {
+    font-size: 26px;
+    margin-bottom: 14px;
+}
+
+.steps {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 18px;
+}
+
+.step {
+    background: rgba(255,255,255,0.06);
+    padding: 18px;
+    border-radius: 14px;
+}
+
+form {
+    margin-top: 24px;
+    display: grid;
+    gap: 14px;
+}
+
+input, textarea, select {
+    width: 100%;
+    padding: 14px;
+    border-radius: 12px;
+    border: none;
+    font-size: 15px;
+}
+
+textarea {
+    min-height: 90px;
+}
+
+.submit {
+    background: #2ecc71;
+    color: #000;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+footer {
+    margin-top: 80px;
+    font-size: 13px;
+    opacity: 0.6;
+    text-align: center;
+    line-height: 1.4;
 }
 </style>
 </head>
 
 <body>
 
-<div class="card fade">
-    <div class="title" id="question"></div>
-    <div class="options" id="options"></div>
-    <div class="footer" id="footer"></div>
+<div class="container">
+
+    <!-- HERO -->
+    <div class="hero">
+        <h1>We help you find the right original auto part</h1>
+        <p>Even if you don’t know the part number.<br>
+        Describe your vehicle — we’ll take care of the rest.</p>
+        <a href="#form" class="button">Request a Part</a>
+    </div>
+
+    <!-- HOW IT WORKS -->
+    <div class="section">
+        <h2>How it works</h2>
+        <div class="steps">
+            <div class="step">1. You describe your vehicle and the part you need</div>
+            <div class="step">2. We check original parts using professional catalogs</div>
+            <div class="step">3. You receive available options and prices by email</div>
+        </div>
+    </div>
+
+    <!-- FORM -->
+    <div class="section" id="form">
+        <h2>Request a part</h2>
+
+        <form id="partsForm">
+            <select name="vehicle_type" required>
+                <option value="">Vehicle type</option>
+                <option>Passenger car</option>
+                <option>Truck</option>
+            </select>
+
+            <input type="text" name="brand" placeholder="Brand (e.g. BMW)" required>
+            <input type="text" name="model" placeholder="Model" required>
+            <input type="text" name="year" placeholder="Year">
+            <input type="text" name="engine" placeholder="Engine (optional)">
+            <input type="text" name="vin" placeholder="VIN (optional)">
+
+            <textarea name="request" placeholder="What part are you looking for?" required></textarea>
+
+            <input type="email" name="email" placeholder="Your email address" required>
+
+            <button type="submit" class="submit">Send request</button>
+
+            <p style="font-size:13px;opacity:.6;">
+                We will contact you by email with available options.
+            </p>
+        </form>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        Contact: сюда@email.com<br><br>
+        We do not sell parts directly.<br>
+        We assist with selection and sourcing of original auto parts.
+    </footer>
+
 </div>
 
+<!-- EMAILJS -->
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 <script>
-const questions = [
-    { q: "Моя вторая половина должна быть человеком, который…", a: ["чувствует без слов", "умеет говорить прямо", "находит баланс между этим"] },
-    { q: "Лучший отдых — это…", a: ["спонтанная поездка", "уютный вечер", "смена обстановки"] },
-    { q: "В отношениях для меня важнее…", a: ["спокойствие", "эмоции", "гармония"] },
-    { q: "В людях я больше всего ценю…", a: ["искренность", "юмор", "надёжность"] },
-    { q: "Идеальный разговор — это когда…", a: ["глубина", "лёгкость", "время летит незаметно"] },
-    { q: "Мне ближе люди, которые…", a: ["живут сердцем", "думают головой", "чувствуют момент"] },
-    { q: "В жизни я выбираю…", a: ["стабильность", "развитие", "осознанный путь"] },
-    { q: "Счастье для меня — это когда…", a: ["спокойно внутри", "интересно вокруг", "есть с кем разделить"] },
-    { q: "Вторая половина — это тот, кто…", a: ["поддерживает", "вдохновляет", "идёт рядом"] },
-    { q: "Лучшие моменты — это…", a: ["смех", "тихие вечера", "неожиданность"] },
-    { q: "Мне нравится, когда человек…", a: ["загадочный", "открытый", "настоящий"] },
-    { q: "В отношениях я больше за…", a: ["доверие", "страсть", "взаимность"] },
-    { q: "Важно, чтобы рядом был человек, который…", a: ["принимает", "разделяет цели", "развивается вместе"] },
-    { q: "Лучшие решения принимаются…", a: ["интуитивно", "осознанно", "в нужный момент"] },
-    { q: "Формат отношений, который мне ближе…", a: ["команда", "личности", "союз"] },
-    { q: "Если честно, я верю, что…", a: ["совпадения не случайны", "люди находят друг друга", "всё вовремя"] }
-];
+(function(){
+    emailjs.init("YOUR_PUBLIC_KEY");
+})();
 
-// 🔥 ТВОИ ОТВЕТЫ (меняй тут, если захочешь)
-const myAnswers = [
-    "находит баланс между этим",
-    "уютный вечер",
-    "гармония",
-    "искренность",
-    "время летит незаметно",
-    "чувствуют момент",
-    "осознанный путь",
-    "есть с кем разделить",
-    "идёт рядом",
-    "тихие вечера",
-    "настоящий",
-    "взаимность",
-    "развивается вместе",
-    "в нужный момент",
-    "союз",
-    "всё вовремя"
-];
+document.getElementById("partsForm").addEventListener("submit", function(e) {
+    e.preventDefault();
 
-let current = 0;
-let answers = [];
-
-const questionEl = document.getElementById("question");
-const optionsEl = document.getElementById("options");
-const footerEl = document.getElementById("footer");
-
-function loadQuestion() {
-    const item = questions[current];
-    questionEl.textContent = item.q;
-    optionsEl.innerHTML = "";
-
-    item.a.forEach(text => {
-        const div = document.createElement("div");
-        div.className = "option";
-        div.textContent = text;
-        div.onclick = () => next(text);
-        optionsEl.appendChild(div);
+    emailjs.sendForm(
+        "YOUR_SERVICE_ID",
+        "YOUR_TEMPLATE_ID",
+        this
+    ).then(() => {
+        alert("Request sent successfully!");
+        this.reset();
+    }, () => {
+        alert("Something went wrong. Please try again later.");
     });
-
-    footerEl.textContent = `Вопрос ${current + 1} из ${questions.length}`;
-}
-
-function next(answer) {
-    answers.push(answer);
-    current++;
-    current < questions.length ? loadQuestion() : showFinal();
-}
-
-function showFinal() {
-    let совпадения = 0;
-
-    const list = answers.map((a, i) => {
-        const match = a === myAnswers[i];
-        if (match) совпадения++;
-        return `<div class="${match ? 'match' : ''}">• ${a}</div>`;
-    }).join("");
-
-    questionEl.innerHTML = `
-        У нас совпало <b>${совпадения} из ${questions.length}</b> 💫<br><br>
-        И это не случайно.<br>
-        <b>Ты моя вторая половина на 100% ❤️</b><br><br>
-        💖💖💖💖💖<br>
-        😘😘😘
-    `;
-
-    optionsEl.innerHTML = `<div class="answers">${list}</div>`;
-    footerEl.textContent = "";
-}
-
-loadQuestion();
+});
 </script>
 
 </body>
