@@ -84,11 +84,26 @@ textarea {
     min-height: 90px;
 }
 
-.submit {
-    background: #2ecc71;
+    .submit {
+    background: linear-gradient(135deg, #2ecc71, #27ae60);
     color: #000;
-    font-weight: 600;
+    font-weight: 700;
     cursor: pointer;
+    padding: 18px;
+    font-size: 18px;
+    border-radius: 16px;
+    width: 100%;
+    box-shadow: 0 10px 24px rgba(46,204,113,0.35);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.submit:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 14px 30px rgba(46,204,113,0.45);
+}
+
+.submit:active {
+    transform: scale(0.98);
 }
 
 footer {
@@ -144,17 +159,17 @@ footer {
 
             <input type="email" name="email" placeholder="Your email address" required>
 
-            <button type="submit" class="submit">Send request</button>
+            <button type="submit" class="submit">Send request 🚀</button>
 
             <p style="font-size:13px;opacity:.6;">
-                We will contact you by email with available options.
+                No spam. Only a personal reply. We will contact you by email with available options.
             </p>
         </form>
     </div>
 
     <!-- FOOTER -->
     <footer>
-        Contact: сюда@email.com<br><br>
+        Contact: bsparts@gmail.com<br><br>
         We do not sell parts directly.<br>
         We assist with selection and sourcing of original auto parts.
     </footer>
